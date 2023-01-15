@@ -20,11 +20,12 @@ def cadastro(request):
         if senha != confirmar_senha:
             messages.add_message(request, constants.ERROR, "Senhas não coincidem!")
             return render(request, 'cadastro.html')
+        
         try:
             user = User.objects.create_user(
-                username= nome,
+                username=nome,
                 email=email,
-                password=senha
+                password=senha,
             )
             messages.add_message(request, constants.SUCCESS, "Usuario cadastrado com Sucesso!")
             return render(request, 'cadastro.html')
