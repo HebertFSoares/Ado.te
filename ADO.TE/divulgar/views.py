@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Tag,Raca,Pet
@@ -55,5 +55,12 @@ def seus_pets(request):
         pets = Pet.objects.filter(usuario=request.user)
         return render(request, 'seus_pets.html', {'pets': pets})
 
-def remover_pet(request):
-    
+@login_required
+def remover_pet(request, id):
+    pet = Pet.objects.get(id=id)
+    if not pet.usuario == request.user:
+        messages.add_message(request, constants.ERROR, 'Esse pet não é seu.')
+        return redirect('/divulgar/seus_pets')
+    pet.delete()
+    messages.add_message(request, constants.SUCCESS, 'Pet Removido com sucesso.')
+    return redirect('/divulgar/seus_pets')
