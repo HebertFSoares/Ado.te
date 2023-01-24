@@ -64,6 +64,8 @@ def remover_pet(request, id):
     pet.delete()
     messages.add_message(request, constants.SUCCESS, 'Pet Removido com sucesso.')
     return redirect('/divulgar/seus_pets')
+
+@login_required
 def ver_pet(request,id):
     if request.method == "GET":
         pet = Pet.objects.get(id=id)
