@@ -5,6 +5,7 @@ from divulgar.models import Pet,Raca
 from .models import PedidoAdocao
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 
 @login_required
 def listar_pets(request):
@@ -42,3 +43,37 @@ def pedido_adocao(request, id_pet):
     pedido.save()
     messages.add_message(request, constants.SUCCESS, 'Esse pedido de adoção foi realizado com sucesso!')
     return redirect('/adotar')
+
+@login_required
+def processa_pedido_adocao(request, id_pedido):
+    status = request.GET.get('status')
+    pedido = PedidoAdocao.objects.get(id=id_pedido)
+    
+    if status == "A":
+        pedido.status = "AP"
+        string = "Sua adoção foi aprovada!"
+    elif status == "R":
+        pedido.status = "R"
+        string = "Sua adoção foi recusada!"
+        
+    pedido.save()
+    
+    pet = Pet.objects.get(id=id_pedido)
+    
+    if status == "A":
+        pedido.status = "AP"
+        string = "Sua adoção foi aprovada!"
+    elif status == "R":
+        pedido.status = "R"
+        string = "Sua adoção foi recusada!"
+        
+    print(pedido.usuario.email)
+    email = send_mail(
+        'Sua adoção foi processada',
+        string,
+        'hebertsoaresdof@gmail.comq',
+        [pedido.usuario.email,],
+    )
+    
+    messages.add_message(request, constants.SUCCESS, 'Pedido de adoção processado com sucesso!')
+    return redirect('/divulgar/ver_pedido_adocao')
