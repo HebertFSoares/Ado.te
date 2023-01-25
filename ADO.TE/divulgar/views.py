@@ -1,11 +1,11 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Tag,Raca,Pet
 from django.contrib import messages
 from django.contrib.messages import constants
 from adotar.models import PedidoAdocao
-
+from django.views.decorators.csrf import csrf_exempt
 
 @login_required
 def novo_pet(request):
@@ -79,3 +79,21 @@ def ver_pedido_adocao(request):
         pedidos = PedidoAdocao.objects.filter(usuario= request.user).filter(status="AG")
         return render(request, 'ver_pedido_adocao.html', {'pedidos': pedidos})
     
+@login_required
+def dashboard(request):
+    if request.method == "GET":
+        return render(request, 'dashboard.html')
+    
+@login_required
+@csrf_exempt
+def api_adocoes_por_raca(request):
+    racas = Raca.objects.all()
+    qtd_adocoes = list()
+    
+    for raca in racas:
+        adocoes = PedidoAdocao.objects.filter(pet__raca=raca).count()
+        qtd_adocoes.append(adocoes)
+    racas = [raca.raca for raca in racas]
+    data = {'qtd_adocoes': qtd_adocoes,
+            'labels': racas,}
+    return JsonResponse(data)
