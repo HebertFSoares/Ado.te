@@ -5,7 +5,7 @@ Desenvolvida uma aplicação completa para adoção de animais.
 
 ## Tecnologias e práticas utilizadas
 - Python
-- Django 4.1
+- Django 
 - SQLite
 - Arquitetura MVT
 
