@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\heber\Desktop\Ado.te-DJANGO\ADO.TE\venv"
+VIRTUAL_ENV="C:\Users\heber\Documents\GitHub\PROJETOS(Python)\Ado.te-DJANGO\ADO.TE\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
