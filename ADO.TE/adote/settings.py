@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import django_heroku
 from pathlib import Path
 import os
 from django.contrib.messages import constants
@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-q2_f(5kx1kicd)*!m+e53*fwu8$ozz-=x+ug-nxhp=6d#*g^d3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['']
+ALLOWED_HOSTS = ['https://adote-django-434ffeb92537.herokuapp.com/']
 
 
 # Application definition
@@ -145,3 +145,5 @@ MESSAGE_TAGS = {
 # Email
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+django_heroku.settings(locals())
